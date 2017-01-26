@@ -1,3 +1,0 @@
-<launch>
-  <test test-name="test_from_ros_costmaps" pkg="cost_map_demos" type="test_from_ros_costmaps"/>
-</launch>
