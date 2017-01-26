@@ -1,0 +1,16 @@
+ros-kinetic-cost-map-core (0.3.0-0wily) wily; urgency=high
+
+  * interpolations for atPosition
+  * full implementation of line iterator
+  * full implementation of polygon iterator
+  * setPosition method for the CostMap class
+
+ -- Daniel Stonier <stonier@yujinrobot.com>  Mon, 26 Dec 2016 15:00:00 -0000
+
+ros-kinetic-cost-map-core (0.2.0-0wily) wily; urgency=high
+
+  * initial spinoff from the grid_map library
+
+ -- Daniel Stonier <stonier@yujinrobot.com>  Wed, 24 Aug 2016 15:00:00 -0000
+
+
