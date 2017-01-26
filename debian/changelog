@@ -1,0 +1,14 @@
+ros-kinetic-cost-map-ros (0.3.0-0xenial) xenial; urgency=high
+
+  * Costmap2DROS converters
+  * Bugfix missing data copy in the toGridMap conversion
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Mon, 26 Dec 2016 15:00:00 -0000
+
+ros-kinetic-cost-map-ros (0.2.0-0xenial) xenial; urgency=high
+
+  * initial creation of similar functionality to that of grid maps
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Wed, 24 Aug 2016 15:00:00 -0000
+
+
