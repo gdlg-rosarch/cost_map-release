@@ -1,0 +1,13 @@
+ros-kinetic-cost-map-cv (0.3.0-0jessie) jessie; urgency=high
+
+  * image bundling now supports multiple layers
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Mon, 26 Dec 2016 15:00:00 -0000
+
+ros-kinetic-cost-map-cv (0.2.0-0jessie) jessie; urgency=high
+
+  * image bundling for loading/saving from and to file
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Wed, 24 Aug 2016 15:00:00 -0000
+
+
