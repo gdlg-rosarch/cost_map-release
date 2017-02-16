@@ -1,12 +1,12 @@
 # Cost Map
 
 This is a C++ library directly analogous to ETHZ ASL's [GridMap] library,
-but designed for use with costs where the data element is a byte (as opposed to grid_map's doubles).
+but designed for use with costs where the data element is an unsigned byte (as opposed to grid_map's doubles).
 
 ## Table of Contents
 
 1. [Packages Overview](#packages-overview)
-2. [Conventions & Definitions](#conventions-and-definitions)
+2. [CostMap](#costmap)
 3. [Image Bundles](#image-bundles)
 4. [Costmap2DROS Conversions](#costmap2dros-conversions)
 5. [Other Conversions](#other-conversions)
@@ -24,11 +24,13 @@ but designed for use with costs where the data element is a byte (as opposed to 
 
 The source code is released under a [BSD 3-Clause license](LICENSE).
 
-## Conventions and Definitions
+## CostMap
 
-The core api is designed to maintain as close a compatibility to grid maps as possible. As such, all grid map conventions
-and definitions apply - an illustrative reference of these is provided as a convenience below. For further detail,
-please refer to the [GridMap README](https://github.com/ethz-asl/grid_map/blob/master/README.md).
+The core `cost_map::CostMap` class is designed to maintain as close a compatibility
+to grid maps as possible. This compatibility extends to conventions, definitions and API.
+For convenience, an illustrative reference of a few
+conventions is provided below. For further detail, please refer to the 
+[GridMap README](https://github.com/ethz-asl/grid_map/blob/master/README.md).
 
 [![Layers](cost_map_core/doc/grid_map_layers.png)](cost_map_core/doc/grid_map_layers.pdf)
 
@@ -38,9 +40,9 @@ please refer to the [GridMap README](https://github.com/ethz-asl/grid_map/blob/m
 
 ### About
 
-Image bundles allow for an easy way to load/save cost map information from/to files on disk. This
-data is stored in two parts - 1) meta-information about the costmap in a yaml file and
-2) layer data that is stored alongside in grayscale images. 
+Image bundles provide an easy way to load and save cost maps to and from files on disk. 
+An image bundle consists of data stored in two parts - 1) meta-information about a costmap in
+a yaml file and 2) layer data that is stored alongside in grayscale images. 
 
 A typical meta yaml for an image bundle:
 
@@ -86,17 +88,17 @@ rosrun cost_map_ros save_image_bundle /foo/cost_map foo.yaml
 
 ### ImageBundle Methods
 
-* `cost_map::toImageBundle()` : convert a `cost_map::CostMap` object to an image bundle
-* `cost_map::fromImageBundle()` : load an image bundle into a `cost_map::CostMap` object
+* `cost_map::toImageBundle(...)` : save a cost map to an image bundle
+* `cost_map::fromImageBundle(...)` : load an image bundle into a cost map object
 
-See the [LoadImageBundle/SaveImageBundle](https://github.com/stonier/cost_map/blob/devel/cost_map_ros/src/lib/image_bundles.cpp)
+See the [LoadImageBundle](https://github.com/stonier/cost_map/blob/devel/cost_map_ros/src/lib/image_bundles.cpp#L203)/[SaveImageBundle](https://github.com/stonier/cost_map/blob/devel/cost_map_ros/src/lib/image_bundles.cpp#L235)
 classes which illustrate how the command line utilities use these api.
 
 ## Costmap2DROS Conversions
 
 The ROS Navistack uses `costmap_2d::Costmap2DROS` objects and it is sometimes necessary
-to make conversions from these to provide new style cost maps to other libraries. Full conversions are possible
-but of special interest is to extract a costmap subwindow around the pose of the robot itself.
+to make conversions from these to provide new style cost maps to other libraries. Methods are
+available for both full map conversion as well as subwindows centred on the pose of the robot itself.
 
 ### Costmap2DROS vs CostMap
 
@@ -116,17 +118,17 @@ roslaunch cost_map_demos from_ros_costmaps.launch --screen
 
 ### Costmap2DROS Methods
 
-* `cost_map::fromCostMap2DROS()` : convert a full window or a subwindow centred on the robot pose to a cost_map::CostMap object
-* `cost_map::addLayerFromCostMap2D()` : just copy the data from a Costmap2DROS object into a single layer
+* `cost_map::fromCostmap2DROS(...)` : create a cost map from a Costmap2DROS
+* `cost_map::fromCostmap2DROSAtRobotPose(...)` : create a cost map from a subwindow around the robot pose in a Costmap2DROS
 
 See the [from_ros_costmaps demo program](https://github.com/stonier/cost_map/blob/devel/cost_map_demos/src/applications/from_ros_costmaps.cpp)
-which illustrates how to use these api.
+which illustrates how to use these api. Additionally you can directly use the `grid_map::Costmap2DConverter` template class for more atomic operations.
 
 ## Other Conversions
 
-* `cost_map::toGridMap()` : convert to a float based `grid_map::GridMap` by normalising values between 0.0 (FREE_SPACE) and 100.0 (NO_INFORMATION))
-* `cost_map::toMessage()/fromMessage()` : convert between `cost_map::CostMap` and `cost_map_msgs::CostMap` types
-* `cost_map::addLayerFromROSImage()` : add a layer from `sensor_msgs::Image` type
+* `cost_map::toGridMap(...)` : convert to a float based grid map by normalising values between 0.0 and 100.0
+* `cost_map::toMessage()/fromMessage(...)` : convert between a cost_map c++ object and a cost map message type
+* `cost_map::addLayerFromROSImage(...)` : add a layer from ros immage message type (sensor_msgs::Image)
 
 ## Inflation Computers
 
