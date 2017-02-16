@@ -1,0 +1,20 @@
+ros-kinetic-cost-map-ros (0.3.1-0wily) wily; urgency=high
+
+  * minor api name fixes for Costmap2D references
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Wed, 15 Feb 2017 15:00:00 -0000
+
+ros-kinetic-cost-map-ros (0.3.0-0wily) wily; urgency=high
+
+  * costmap2DROS converters
+  * bugfix missing data copy in the toGridMap conversion
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Mon, 26 Dec 2016 15:00:00 -0000
+
+ros-kinetic-cost-map-ros (0.2.0-0wily) wily; urgency=high
+
+  * initial creation of similar functionality to that of grid maps
+
+ -- Daniel Stonier <d.stonier@gmail.com>  Wed, 24 Aug 2016 15:00:00 -0000
+
+
