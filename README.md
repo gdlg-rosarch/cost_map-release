@@ -1,16 +1,18 @@
 # Cost Map
 
 This is a C++ library directly analogous to ETHZ ASL's [GridMap] library,
-but designed for use with costs where the data element is an unsigned byte (as opposed to grid_map's doubles).
+but designed for use with costs where the data element is an unsigned char (as opposed to grid_map's doubles).
 
 ## Table of Contents
 
 1. [Packages Overview](#packages-overview)
 2. [CostMap](#costmap)
-3. [Image Bundles](#image-bundles)
-4. [Costmap2DROS Conversions](#costmap2dros-conversions)
-5. [Other Conversions](#other-conversions)
-6. [Inflation Computers](#inflation-computers)
+3. [Publishing and Subscribing](#publishing-and-subscribing)
+4. [Visualisations](#visualisations)
+5. [Saving and Loading](#saving-and-loading)
+6. [Costmap2DROS Conversions](#costmap2dros-conversions)
+7. [Other Conversions](#other-conversions)
+8. [Inflation Computers](#inflation-computers)
 
 ## Packages Overview
 
@@ -28,21 +30,84 @@ The source code is released under a [BSD 3-Clause license](LICENSE).
 
 The core `cost_map::CostMap` class is designed to maintain as close a compatibility
 to grid maps as possible. This compatibility extends to conventions, definitions and API.
-For convenience, an illustrative reference of a few
-conventions is provided below. For further detail, please refer to the 
-[GridMap README](https://github.com/ethz-asl/grid_map/blob/master/README.md).
+For convenience, an illustrative reference of a few of the conventions that hold for both
+cost maps and grid maps is provided below.
 
 [![Layers](cost_map_core/doc/grid_map_layers.png)](cost_map_core/doc/grid_map_layers.pdf)
 
 [![Conventions](cost_map_core/doc/grid_map_conventions.png)](cost_map_core/doc/grid_map_conventions.pdf)
 
-## Image Bundles
+Please refer to the [GridMap README](https://github.com/ethz-asl/grid_map/blob/master/README.md) for a
+more comprehensive outline of what is possible with cost maps and grid maps.
 
-### About
+Doxygen documentation for the cost map API's is served via the *Code API* links on the
+[ROS wiki](http://wiki.ros.org/cost_map) for each respective release/package. In addition
+the latest doxygen documentation can always be found for each package at:
 
-Image bundles provide an easy way to load and save cost maps to and from files on disk. 
+* [cost_map_core](http://docs.ros.org/api/cost_map_core/html/annotated.html)
+* [cost_map_ros](http://docs.ros.org/api/cost_map_ros/html/annotated.html)
+* [cost_map_visualisations](http://docs.ros.org/api/cost_map_visualisations/html/annotated.html)
+
+## Publishing and Subscribing
+
+Use the `cost_map::toMessage()/fromMessage(...)` methods.
+
+```cpp
+// Publishing
+
+#include <cost_map_ros/converter.hpp>
+
+void publishCostMap(const cost_map::CostMap& cost_map) {
+  cost_map_msgs::CostMap msg;
+  toMessage(cost_map, msg);
+  publisher.publish(msg);
+}
+```
+
+```cpp
+// Subscribing
+
+#include <cost_map_ros/converter.hpp>
+
+void costMapCallback(const cost_map_msgs::CostMap::ConstPtr& msg) {
+  cost_map::CostMap cost_map;
+  cost_map::fromMessage(*msg, cost_map);
+}
+```
+
+## Visualisations
+
+As with grid maps, the method employed to visualise is to drop in a relay node between
+the cost map publisher and rviz to convert it to the appropriate type for visualisation.
+This spares you from having to write any gui-related code in the cost maps or the
+planners/controllers that use the cost maps.
+
+`cost_map_visualisations` has a relay node that converts each layer of a subscribed
+cost map topic to a `nav_msgs/OccupancyGrid` topic for rviz. Simply include and
+remap the input cost map topic in your launcher, for example:
+
+```xml
+<launch>
+  <!-- node that publishes cost maps -->
+
+  <node pkg="cost_map_visualisations" type="node" name="cost_map_visualisation">
+    <remap from="cost_map_visualisation/cost_map" to="funky_cost_maps/cost_map"/>
+  </node>
+
+  <!-- rviz, with a pre-loaded configuration that loads the resulting occupancy grid maps -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find funky_demos)/rviz/funky_cost_maps.rviz" />
+</launch>
+```
+
+An example of a relay in action is in the image bundle demo below.
+
+## Saving and Loading
+
+### Image Bundles
+
+Image bundles provide an easy way to load and save cost maps to and from files on disk.
 An image bundle consists of data stored in two parts - 1) meta-information about a costmap in
-a yaml file and 2) layer data that is stored alongside in grayscale images. 
+a yaml file and 2) layer data that is stored alongside in grayscale images.
 
 A typical meta yaml for an image bundle:
 
@@ -64,7 +129,7 @@ layers:
     layer_data: can_be_some_other_name.png
 ```
 
-See [cost_map_ros/image_bundles/example.yaml](https://github.com/stonier/cost_map/blob/devel/cost_map_ros/image_bundles/example.yaml) for a real example.
+See [cost_map_ros/image_bundles/example.yaml](cost_map_ros/image_bundles/example.yaml) for a real example.
 
 ### ImageBundle Demo
 
@@ -91,7 +156,7 @@ rosrun cost_map_ros save_image_bundle /foo/cost_map foo.yaml
 * `cost_map::toImageBundle(...)` : save a cost map to an image bundle
 * `cost_map::fromImageBundle(...)` : load an image bundle into a cost map object
 
-See the [LoadImageBundle](https://github.com/stonier/cost_map/blob/devel/cost_map_ros/src/lib/image_bundles.cpp#L203)/[SaveImageBundle](https://github.com/stonier/cost_map/blob/devel/cost_map_ros/src/lib/image_bundles.cpp#L235)
+See the [LoadImageBundle](cost_map_ros/src/lib/image_bundles.cpp#L203)/[SaveImageBundle](cost_map_ros/src/lib/image_bundles.cpp#L235)
 classes which illustrate how the command line utilities use these api.
 
 ## Costmap2DROS Conversions
@@ -121,13 +186,12 @@ roslaunch cost_map_demos from_ros_costmaps.launch --screen
 * `cost_map::fromCostmap2DROS(...)` : create a cost map from a Costmap2DROS
 * `cost_map::fromCostmap2DROSAtRobotPose(...)` : create a cost map from a subwindow around the robot pose in a Costmap2DROS
 
-See the [from_ros_costmaps demo program](https://github.com/stonier/cost_map/blob/devel/cost_map_demos/src/applications/from_ros_costmaps.cpp)
+See the [from_ros_costmaps demo program](cost_map_demos/src/applications/from_ros_costmaps.cpp)
 which illustrates how to use these api. Additionally you can directly use the `grid_map::Costmap2DConverter` template class for more atomic operations.
 
 ## Other Conversions
 
 * `cost_map::toGridMap(...)` : convert to a float based grid map by normalising values between 0.0 and 100.0
-* `cost_map::toMessage()/fromMessage(...)` : convert between a cost_map c++ object and a cost map message type
 * `cost_map::addLayerFromROSImage(...)` : add a layer from ros immage message type (sensor_msgs::Image)
 
 ## Inflation Computers
@@ -149,7 +213,7 @@ Obstacle Layer | Inflated Layer | Deflated Layer
 * `cost_map::ROSInflationComputer` : emulates the ROS inflation algorithm
 * `cost_map::Deflate` : functor reverses an inflation computation
 
-See the [inflation demo program](https://github.com/stonier/cost_map/blob/devel/cost_map_demos/src/applications/inflation.cpp)
+See the [inflation demo program](cost_map_demos/src/applications/inflations.cpp)
 which illustrates how to use these classes.
 
 [GridMap]: https://github.com/ethz-asl/grid_map
