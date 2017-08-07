@@ -1,0 +1,12 @@
+Source: ros-kinetic-cost-map-ros
+Section: misc
+Priority: extra
+Maintainer: Daniel Stonier <d.stonier@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libboost-all-dev, libopencv-dev, libyaml-cpp-dev, ros-kinetic-catkin, ros-kinetic-cost-map-core, ros-kinetic-cost-map-msgs, ros-kinetic-costmap-2d, ros-kinetic-ecl-build, ros-kinetic-ecl-command-line, ros-kinetic-ecl-console, ros-kinetic-grid-map-core, ros-kinetic-grid-map-costmap-2d, ros-kinetic-grid-map-ros, ros-kinetic-grid-map-visualization, ros-kinetic-nav-msgs, ros-kinetic-roslib
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-cost-map-ros
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libboost-all-dev, libopencv-dev, libyaml-cpp-dev, ros-kinetic-cost-map-core, ros-kinetic-cost-map-msgs, ros-kinetic-costmap-2d, ros-kinetic-ecl-build, ros-kinetic-ecl-command-line, ros-kinetic-ecl-console, ros-kinetic-grid-map-core, ros-kinetic-grid-map-costmap-2d, ros-kinetic-grid-map-ros, ros-kinetic-grid-map-visualization, ros-kinetic-nav-msgs, ros-kinetic-roslib
+Description: Cost maps, following the style of ethz-asl's grid_map library.
