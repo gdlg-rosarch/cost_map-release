@@ -19,8 +19,7 @@
 #include <string>
 #include "../../include/cost_map_ros/converter.hpp"
 
-
-#include <grid_map_ros/Costmap2DConverter.hpp>
+#include <grid_map_costmap_2d/grid_map_costmap_2d.hpp>
 
 /*****************************************************************************
 ** Namespaces
@@ -302,6 +301,14 @@ Costmap2DROSServiceProvider::Costmap2DROSServiceProvider(costmap_2d::Costmap2DRO
 {
   ros::NodeHandle private_nodehandle("~");
   service = private_nodehandle.advertiseService(service_name, &Costmap2DROSServiceProvider::callback, this);
+}
+
+Costmap2DROSServiceProvider::Costmap2DROSServiceProvider(costmap_2d::Costmap2DROS* ros_costmap,
+                                                         ros::NodeHandle& node_handle,
+                                                         const std::string& service_name)
+: ros_costmap(ros_costmap)
+{
+  service = node_handle.advertiseService(service_name, &Costmap2DROSServiceProvider::callback, this);
 }
 
 bool Costmap2DROSServiceProvider::callback(
