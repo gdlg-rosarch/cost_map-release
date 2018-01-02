@@ -1,0 +1,12 @@
+Source: ros-kinetic-cost-map-core
+Section: misc
+Priority: extra
+Maintainer: Daniel Stonier <stonier@yujinrobot.com>
+Build-Depends: debhelper (>= 9.0.0), ros-kinetic-catkin, ros-kinetic-ecl-build, ros-kinetic-ecl-console, ros-kinetic-ecl-eigen, ros-kinetic-grid-map-core
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-cost-map-core
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-kinetic-ecl-build, ros-kinetic-ecl-console, ros-kinetic-ecl-eigen, ros-kinetic-grid-map-core
+Description: Cost maps, following the style of ethz-asl's grid_map library.
