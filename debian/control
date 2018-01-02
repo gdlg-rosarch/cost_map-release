@@ -1,0 +1,12 @@
+Source: ros-kinetic-cost-map-cv
+Section: misc
+Priority: extra
+Maintainer: Daniel Stonier <d.stonier@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), libboost-all-dev, libopencv-dev, libyaml-cpp-dev, ros-kinetic-catkin, ros-kinetic-cost-map-core
+Homepage: 
+Standards-Version: 3.9.2
+
+Package: ros-kinetic-cost-map-cv
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libboost-all-dev, libopencv-dev, libyaml-cpp-dev, ros-kinetic-cost-map-core
+Description: Conversions between cost_maps and opencv images.
