@@ -1,3 +1,33 @@
+## cost_map (indigo) - 0.3.3-0
+
+The packages in the `cost_map` repository were released into the `indigo` distro by running `/usr/bin/bloom-release --track indigo --rosdistro indigo cost_map` on `Tue, 02 Jan 2018 03:40:33 -0000`
+
+These packages were released:
+- `cost_map`
+- `cost_map_core`
+- `cost_map_cv`
+- `cost_map_demos`
+- `cost_map_msgs`
+- `cost_map_ros`
+- `cost_map_visualisations`
+
+Version of package(s) in repository `cost_map`:
+
+- upstream repository: https://github.com/stonier/cost_map.git
+- release repository: https://github.com/stonier/cost_map-release.git
+- rosdistro version: `0.3.2-0`
+- old version: `0.3.2-0`
+- new version: `0.3.3-0`
+
+Versions of tools used:
+
+- bloom version: `0.6.1`
+- catkin_pkg version: `0.3.8`
+- rosdep version: `0.11.8`
+- rosdistro version: `0.6.2`
+- vcstools version: `0.1.39`
+
+
 ## cost_map (kinetic) - 0.3.3-0
 
 The packages in the `cost_map` repository were released into the `kinetic` distro by running `/usr/bin/bloom-release --track kinetic --rosdistro kinetic cost_map` on `Tue, 02 Jan 2018 03:37:10 -0000`
